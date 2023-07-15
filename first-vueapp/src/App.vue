@@ -9,7 +9,7 @@
 
     <Tasks @toggle-reminder = "toggleReminder" @delete-task = "deleteTask" :tasks="tasks"></Tasks>
 
-    <Test/>
+    <!-- <Test/> -->
   </div>
 </template>
 
@@ -17,7 +17,7 @@
 import Header from './components/Header';
 import Tasks from './components/Tasks';
 import AddTask from './components/AddTask';
-import Test from './components/test';
+// import Test from './components/test';
 // import logo from './assets/logo.png';
 export default {
   name: 'App',
@@ -25,7 +25,7 @@ export default {
     Header,
     Tasks,
     AddTask,
-    Test
+    // Test
   },
   data(){
     
@@ -39,12 +39,34 @@ export default {
     toggleAddtask(){
       this.showAddTask = !this.showAddTask
     },
-    addTask(task){
-      this.tasks = [...this.tasks, task]
+    async addTask(task){
+      // this.tasks = [...this.tasks, task]
+      const res = await fetch('api/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-type' : 'application/json',
+        },
+        body: JSON.stringify(task)
+
+      })
+
+      const data = await res.json()
+
+      this.tasks = [...this.tasks, data]
     },
-    deleteTask(id) {
+
+   async deleteTask(id) {
       if (confirm('Are you sure?')) {
         this.tasks = this.tasks.filter((task) => task.id !== id)
+
+        const res = await fetch(`api/tasks/${id}`, {method: 'DELETE' 
+          
+      })
+
+       const data = await res.json()
+       
+       return data
+
       }
     },
     toggleReminder(id){
@@ -52,18 +74,15 @@ export default {
 
     }, 
     async fetchTasks() {
-      const res = await fetch('http://localhost:5000/tasks')
+      const res = await fetch('api/tasks')
 
       const data = await res.json()
-
-      console.log(data);
-
 
       return data
 
     },
-    // async fetchTasks(id) {
-    //   const res = await fetch(`apitasks/${id}`)
+    // async (id) {
+    //   const res = await fetch(`api/tasks/${id}`)
 
     //   const data = await res.json()
 

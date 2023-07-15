@@ -1,9 +1,11 @@
 <template>
-  <div class="showColor" :style="{background: color}">
-
+  <div class="showColor" :style="{background: inputcolor}">
+     <div>
+     <input type="text" v-model="inputcolor">
+    </div>
   </div>
 
-  <input type="text" v-model="color">
+
   
 </template>
 
@@ -11,11 +13,11 @@
 export default {
     name: 'test',
     props:{
-        color: String
+        inputcolor: String
     },
     data(){
         return{
-            color: ''
+            inputcolor: ''
         }
     }
 }
